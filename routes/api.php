@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedController;
+use App\Http\Controllers\PasswordResetController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,11 +16,15 @@ use App\Http\Controllers\AuthenticatedController;
 */
 
 
-Route::post('/login', [AuthenticatedController::class, 'login'])->name('login');
+Route::middleware('guest')->group(function () {
+    Route::post('/login', [AuthenticatedController::class, 'login'])->name('login');
+    Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
+});
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/me', function (Request $request) {
         return $request->user();
-    });
+    })->name('me');
     Route::post('/logout', [AuthenticatedController::class, 'logout'])->name('logout');
 });
