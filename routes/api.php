@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthenticatedController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PasswordResetController;
 /*
 |--------------------------------------------------------------------------
@@ -27,4 +28,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user();
     })->name('me');
     Route::post('/logout', [AuthenticatedController::class, 'logout'])->name('logout');
+    Route::apiResource('/categories', CategoryController::class);
 });
